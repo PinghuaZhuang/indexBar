@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Modal, Input } from 'antd';
 import cloneDeep from 'lodash/cloneDeep';
 import EasyTree from '@/components/Tree';
@@ -96,10 +96,14 @@ function App() {
   });
   const defaultExpandedKeys = useMemo(() => employees.map((o) => o.id), []);
 
+  const onChange = useCallback((letter) => {
+    console.log(letter, 'onChange');
+  }, []);
+
   return (
     <Modal visible title="IndexBar Demo" footer={null} width="1000px">
       <Input value={search} onChange={setSearch} />
-      <IndexBar>
+      <IndexBar onChange={onChange}>
         <div className={styles.tree}>
           <EasyTree
             treeData={dataSource}
