@@ -1,0 +1,41 @@
+{
+  "name": "vite-project",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "lint": "lint-staged",
+    "prepare": "husky install",
+    "preview": "vite preview",
+    "sort": "sort-package-json package.json"
+  },
+  "lint-staged": {
+    "*.{js,jsx,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-legacy": "^2.0.0",
+    "@vitejs/plugin-react": "^2.0.0",
+    "consola": "^2.15.3",
+    "husky": "^7.0.4",
+    "lint-staged": "^10.0.7",
+    "prettier": "^2.2.1",
+    "sort-package-json": "^1.55.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.0.0",
+    "vite-plugin-style-import": "^2.0.0"
+  }
+}
