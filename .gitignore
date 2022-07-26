@@ -25,3 +25,4 @@ dist-ssr
 *.sw?
 /example
 vite.config.ts.js
+*.bak
