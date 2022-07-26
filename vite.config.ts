@@ -19,7 +19,7 @@ export default defineConfig({
     host: '0.0.0.0',
   },
   build: {
-    outDir: isDev ? resolve('./example') : 'dist',
+    outDir: isDev ? resolve('./example') : 'lib',
     lib: isDev
       ? undefined
       : {
