@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite",
+    "build:example": "cross-env VITE_ENV=dev vite build",
+    "dev": "cross-env VITE_ENV=dev vite",
     "lint": "lint-staged",
     "prepare": "husky install",
     "preview": "vite preview",

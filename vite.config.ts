@@ -4,7 +4,8 @@ import path from 'path';
 import react from '@vitejs/plugin-react';
 import legacy from '@vitejs/plugin-legacy';
 
-const isDev = process.env.NODE_ENV !== 'production';
+const isDev = process.env.VITE_ENV === 'dev';
+console.log('process.env.VITE_ENV', process.env.VITE_ENV);
 
 function resolve(url: string) {
   return path.resolve(__dirname, url);
@@ -18,6 +19,7 @@ export default defineConfig({
     host: '0.0.0.0',
   },
   build: {
+    outDir: isDev ? resolve('./example') : 'dist',
     lib: isDev
       ? undefined
       : {
