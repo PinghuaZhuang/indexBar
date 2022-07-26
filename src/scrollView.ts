@@ -22,11 +22,17 @@ export default function scrollIntoView(
     selected.offsetTop +
     offsetParents.reduce((prev, curr) => prev + curr.offsetTop, 0);
   // const bottom = top + selected.offsetHeight;
-  const viewRectTop = container.scrollTop;
+  // const viewRectTop = container.scrollTop;
   // const viewRectBottom = viewRectTop + container.clientHeight;
 
-  container.scrollTo({
-    top,
-    behavior: 'smooth',
-  });
+  container.scrollTop = top;
+
+  // container.scrollTo({
+  //   top,
+  //   // behavior: 'smooth',
+  // });
+  // selected.scrollIntoView({
+  //   behavior: 'smooth',
+  //   block: 'start',
+  // });
 }

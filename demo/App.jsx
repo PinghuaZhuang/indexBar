@@ -89,21 +89,14 @@ function App() {
         Employee.addOrg(o);
         if (o.nodes == null || (isArray(o.nodes) && o.nodes.length === 0)) {
           // 修改数据结构, antd不支持多个children字段
-          // adminUsers nodes
           // 只有最底层的组织才有员工
           o.nodes = o.adminUsers.map((q) => new Employee(q, o));
-        } /*  else {
-          // o.selectable = false;
-          // o.checkable = false;
-        } */
+        }
 
         // 根元素
         if (level === 1) {
           o.letter = o.letter?.toUpperCase();
           lettersTmp.push(o.letter);
-          o.title = (
-            <span className={o.letter}>{`${o.letter}-${o.title}`}</span>
-          );
         }
 
         if (level === 0) {
@@ -141,6 +134,24 @@ function App() {
     }
   }, []);
 
+  const titleRender = useCallback(
+    (nodeData) =>
+      nodeData.letter ? (
+        <span
+          className={nodeData.letter}
+        >{`${nodeData.letter}-${nodeData.title}`}</span>
+      ) : (
+        nodeData.title
+      ),
+    [],
+  );
+
+  const filterTreeNode = useCallback(
+    (node) =>
+      node.unfilterNode && (node.nodes == null || node.nodes.length <= 0),
+    [],
+  );
+
   return (
     <Modal visible title="IndexBar Demo" footer={null} width="1000px">
       <Input value={search} onChange={(e) => setSearch(e.target?.value)} />
@@ -164,7 +175,9 @@ function App() {
               checkable
               blockNode
               autoExpandParent={false}
+              filterTreeNode={filterTreeNode}
               defaultExpandedKeys={defaultExpandedKeys}
+              titleRender={titleRender}
             />
           </div>
         </div>

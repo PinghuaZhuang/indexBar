@@ -6,8 +6,9 @@
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import { Tree } from 'antd';
 import { isEmptyString } from '@is';
-import { scrollIntoView } from '@/utils';
+import { scrollIntoView, each } from '@/utils';
 import classNames from 'classnames';
+import cloneDeep from 'lodash/cloneDeep';
 
 let _id = 0;
 let timer = null;
@@ -32,6 +33,7 @@ const loop = (options) => {
     const index = title.indexOf(searchValue);
     const beforeStr = title.substring(0, index);
     const afterStr = title.slice(index + searchValue.length);
+    let unfilterNode = false;
 
     if (index > -1) {
       title = (
@@ -43,8 +45,10 @@ const loop = (options) => {
       );
 
       hasSearch && item[pidField] && expandedKeys.push(item[pidField], pid);
+      unfilterNode = false;
     } else {
       title = <>{item[titleField]}</>;
+      unfilterNode = true;
     }
 
     if (item[childrenField]) {
@@ -59,7 +63,7 @@ const loop = (options) => {
       };
     }
 
-    return { ...item, [titleField]: title };
+    return { ...item, [titleField]: title, unfilterNode };
   });
   return ret;
 };
@@ -79,6 +83,13 @@ const EasyTree = (props) => {
   const _treeData = useMemo(() => {
     if (searchValue === null || isEmptyString(searchValue)) {
       setExpandedKeys(defaultExpandedKeys);
+      each(
+        cloneDeep(treeData),
+        (o) => {
+          o.unfilterNode = false;
+        },
+        'nodes',
+      );
       return treeData;
     }
     const _expandedKeys = [...defaultExpandedKeys];
