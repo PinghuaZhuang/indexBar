@@ -2,5 +2,8 @@
   "editor.formatOnSave": true,
   "path-autocomplete.pathMappings": {
     "@": "${folder}/demo"
+  },
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": "file:///d%3A/JiNiuGitLab/indexBar/.github/workflows/deploy.yml"
   }
 }

@@ -689,7 +689,7 @@ export default [
           name: `研发设计部-dup-${index}`,
           nodes: [],
           pid: 1,
-          letter: letters[random(26)],
+          letter: letters[random(0, 25)],
         };
       }),
     ],
