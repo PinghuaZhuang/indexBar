@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react';
 import legacy from '@vitejs/plugin-legacy';
 
 const isDev = process.env.VITE_ENV === 'dev';
-console.log('process.env.VITE_ENV', process.env.VITE_ENV);
 
 function resolve(url: string) {
   return path.resolve(__dirname, url);
