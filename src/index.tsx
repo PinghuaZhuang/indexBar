@@ -18,7 +18,9 @@ const clickStop: React.MouseEventHandler<HTMLDivElement> = (e) => {
   e.stopPropagation();
 };
 
-const IndexBar: React.FC<IndexBarProps> = (props) => {
+const IndexBar: React.FC<IndexBarProps> & {
+  minHeight: number;
+} = (props) => {
   const {
     children,
     className,
@@ -55,5 +57,7 @@ const IndexBar: React.FC<IndexBarProps> = (props) => {
     </div>
   );
 };
+
+IndexBar.minHeight = 600;
 
 export default IndexBar;

@@ -98,7 +98,7 @@ const LetterBar: React.FC<LetterBarProps> = (props) => {
 
   const lettersNode = useMemo(
     () =>
-      mergeLetters.map((letter: string) => {
+      letters.split('').map((letter: string) => {
         const index = lettersMap[letter.toUpperCase()].index;
         return (
           <span

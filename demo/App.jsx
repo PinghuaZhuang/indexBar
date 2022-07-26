@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import { Modal, Input } from 'antd';
 import cloneDeep from 'lodash/cloneDeep';
 import uniq from 'lodash/uniq';
@@ -7,6 +7,7 @@ import EasyTree from '@/components/Tree';
 import employees from '@/mock/employees';
 import { each } from '@/utils';
 import { isArray } from '@is';
+import scrollIntoView from '../src/scrollView';
 import IndexBar from '../src';
 import styles from './app.module.less';
 
@@ -98,11 +99,10 @@ function App() {
 
         // 根元素
         if (level === 1) {
-          lettersTmp.push(o.letter?.toUpperCase());
+          o.letter = o.letter?.toUpperCase();
+          lettersTmp.push(o.letter);
           o.title = (
-            <span
-              className={o.letter?.toUpperCase()}
-            >{`${o.letter?.toUpperCase()}-${o.title}`}</span>
+            <span className={o.letter}>{`${o.letter}-${o.title}`}</span>
           );
         }
 
@@ -114,56 +114,61 @@ function App() {
     );
     each(
       ret,
-      (o) => {
-        if (o.nodes) {
-          sortBy(o.nodes, 'letter');
+      (o, parent, level) => {
+        if (level === 0 && o.nodes) {
+          o.nodes = sortBy(o.nodes, 'letter');
         }
       },
       'nodes',
     );
-    console.log('ret', ret, root);
+    console.log('ret', ret);
     setLetters(lettersTmp);
     return ret;
   }, []);
   const defaultExpandedKeys = useMemo(() => employees.map((o) => o.id), []);
+  const containerRef = useRef();
 
   const onChange = useCallback((letter) => {
+    const container = containerRef.current;
+    const target = document.querySelector(`.${letter}`);
     console.log(letter, 'onChange');
+    if (target) {
+      scrollIntoView(container, document.querySelector(`.${letter}`));
+      // target.scrollIntoView({
+      //   behavior: 'smooth',
+      //   block: 'start',
+      // });
+    }
   }, []);
 
   return (
     <Modal visible title="IndexBar Demo" footer={null} width="1000px">
-      <div
-        style={{
-          height: 600,
-        }}
-      >
-        <Input value={search} onChange={(e) => setSearch(e.target?.value)} />
-        <IndexBar onChange={onChange} letters={letters}>
-          <div
-            style={{
-              height: 565,
-              overflowY: 'auto',
-            }}
-          >
-            <div className={styles.tree}>
-              <EasyTree
-                treeData={dataSource}
-                fieldNames={{
-                  title: 'title',
-                  key: 'id',
-                  children: 'nodes',
-                }}
-                searchValue={search}
-                checkable
-                blockNode
-                autoExpandParent={false}
-                defaultExpandedKeys={defaultExpandedKeys}
-              />
-            </div>
+      <Input value={search} onChange={(e) => setSearch(e.target?.value)} />
+      <IndexBar onChange={onChange} letters={letters}>
+        <div
+          ref={containerRef}
+          style={{
+            height: IndexBar.minHeight,
+            overflowY: 'auto',
+          }}
+        >
+          <div className={styles.tree}>
+            <EasyTree
+              treeData={dataSource}
+              fieldNames={{
+                title: 'title',
+                key: 'id',
+                children: 'nodes',
+              }}
+              searchValue={search}
+              checkable
+              blockNode
+              autoExpandParent={false}
+              defaultExpandedKeys={defaultExpandedKeys}
+            />
           </div>
-        </IndexBar>
-      </div>
+        </div>
+      </IndexBar>
     </Modal>
   );
 }
