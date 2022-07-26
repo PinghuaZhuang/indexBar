@@ -12,6 +12,7 @@ function resolve(url: string) {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  root: isDev ? resolve('./demo') : process.cwd(),
   envPrefix: 'APP_',
   server: {
     host: '0.0.0.0',
@@ -22,6 +23,13 @@ export default defineConfig({
       : {
           entry: resolve('./src'),
           name: 'createIndexBar',
+        },
+    rollupOptions: isDev
+      ? {}
+      : {
+          output: {
+            exports: 'named',
+          },
         },
   },
   resolve: {
@@ -37,11 +45,13 @@ export default defineConfig({
       },
     },
   },
-  plugins: [
-    legacy(),
-    react(),
-    createStyleImportPlugin({
-      resolves: [AntdResolve()],
-    }),
-  ],
+  plugins: isDev
+    ? [
+        legacy(),
+        react(),
+        createStyleImportPlugin({
+          resolves: [AntdResolve()],
+        }),
+      ]
+    : [],
 });

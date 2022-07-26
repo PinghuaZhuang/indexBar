@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import scrollIntoView from './scrollView';
 import classNames from 'classnames';
 import LetterBar from './LetterBar';
 import LetterBox from './LetterBox';
@@ -59,5 +60,7 @@ const IndexBar: React.FC<IndexBarProps> & {
 };
 
 IndexBar.minHeight = 600;
+
+export { scrollIntoView };
 
 export default IndexBar;

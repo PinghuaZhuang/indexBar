@@ -6,7 +6,7 @@
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import { Tree } from 'antd';
 import { isEmptyString } from '@is';
-import { scrollIntoView, each } from '@/utils';
+import { scrollIntoView, getScrollContainer, each } from '@/utils';
 import classNames from 'classnames';
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -123,14 +123,20 @@ const EasyTree = (props) => {
   useEffect(() => {
     if (!hasSearch || !_treeData.actionScoll) return;
     _treeData.actionScoll = false;
-    const container = document.querySelector(`.jn-tree-${id}`);
+    const container = getScrollContainer(
+      document.querySelector(`.jn-tree-${id}`),
+    );
+    if (container == null) return;
     clearTimeout(timer);
     timer = setTimeout(() => {
       const target = container.querySelector('.highlight');
       if (container == null || target == null) {
         return;
       }
-      scrollIntoView(container, target);
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
     }, 300);
     return () => clearTimeout(timer);
   }, [calcProps.expandedKeys, hasSearch, _treeData]);

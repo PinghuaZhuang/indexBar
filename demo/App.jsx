@@ -85,6 +85,7 @@ function App() {
       ret,
       (o, parent, level) => {
         o.title = o.name;
+        o.orginTitle = o.name;
         o.level = level;
         Employee.addOrg(o);
         if (o.nodes == null || (isArray(o.nodes) && o.nodes.length === 0)) {
@@ -97,6 +98,7 @@ function App() {
         if (level === 1) {
           o.letter = o.letter?.toUpperCase();
           lettersTmp.push(o.letter);
+          o.title = `${o.letter}-${o.title}`;
         }
 
         if (level === 0) {
@@ -127,24 +129,18 @@ function App() {
     console.log(letter, 'onChange');
     if (target) {
       scrollIntoView(container, document.querySelector(`.${letter}`));
-      // target.scrollIntoView({
-      //   behavior: 'smooth',
-      //   block: 'start',
-      // });
     }
   }, []);
 
-  const titleRender = useCallback(
-    (nodeData) =>
-      nodeData.letter ? (
-        <span
-          className={nodeData.letter}
-        >{`${nodeData.letter}-${nodeData.title}`}</span>
-      ) : (
-        nodeData.title
-      ),
-    [],
-  );
+  const titleRender = useCallback((nodeData) => {
+    return nodeData.letter ? (
+      <span className={nodeData.letter}>
+        {typeof nodeData.title === 'string' ? nodeData.title : nodeData.title}
+      </span>
+    ) : (
+      nodeData.title
+    );
+  }, []);
 
   const filterTreeNode = useCallback(
     (node) =>
@@ -154,7 +150,13 @@ function App() {
 
   return (
     <Modal visible title="IndexBar Demo" footer={null} width="1000px">
-      <Input value={search} onChange={(e) => setSearch(e.target?.value)} />
+      <Input
+        value={search}
+        style={{
+          marginBottom: 10,
+        }}
+        onChange={(e) => setSearch(e.target?.value)}
+      />
       <IndexBar onChange={onChange} letters={letters}>
         <div
           ref={containerRef}
