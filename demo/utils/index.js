@@ -36,11 +36,18 @@ export const scrollIntoView = function (container, selected) {
  * @param {String} childrenField children对应的字段名
  * @example [{ name: 'xxx', children: [{ name: 'childrenName' }] }]
  */
-export function each(arr = [], fn, childrenField = 'children') {
+export function each(
+  arr = [],
+  fn,
+  childrenField = 'children',
+  parent,
+  parentLevel,
+) {
+  let level = parent == null ? 0 : parentLevel + 1;
   arr.forEach((data) => {
     if (data[childrenField]) {
-      each(data[childrenField], fn, childrenField);
+      each(data[childrenField], fn, childrenField, data, level);
     }
-    fn(data);
+    fn(data, parent, level);
   });
 }

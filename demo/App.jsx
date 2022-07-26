@@ -1,6 +1,8 @@
 import { useState, useMemo, useCallback } from 'react';
 import { Modal, Input } from 'antd';
 import cloneDeep from 'lodash/cloneDeep';
+import uniq from 'lodash/uniq';
+import sortBy from 'lodash/sortBy';
 import EasyTree from '@/components/Tree';
 import employees from '@/mock/employees';
 import { each } from '@/utils';
@@ -73,12 +75,16 @@ export class Employee {
 
 function App() {
   const [search, setSearch] = useState();
+  const [letters, setLetters] = useState('');
   const dataSource = useMemo(() => {
     const ret = cloneDeep(employees);
+    const lettersTmp = [];
+    let root = [];
     each(
       ret,
-      (o) => {
+      (o, parent, level) => {
         o.title = o.name;
+        o.level = level;
         Employee.addOrg(o);
         if (o.nodes == null || (isArray(o.nodes) && o.nodes.length === 0)) {
           // 修改数据结构, antd不支持多个children字段
@@ -89,11 +95,36 @@ function App() {
           // o.selectable = false;
           // o.checkable = false;
         } */
+
+        // 根元素
+        if (level === 1) {
+          lettersTmp.push(o.letter?.toUpperCase());
+          o.title = (
+            <span
+              className={o.letter?.toUpperCase()}
+            >{`${o.letter?.toUpperCase()}-${o.title}`}</span>
+          );
+        }
+
+        if (level === 0) {
+          root = o;
+        }
       },
       'nodes',
     );
+    each(
+      ret,
+      (o) => {
+        if (o.nodes) {
+          sortBy(o.nodes, 'letter');
+        }
+      },
+      'nodes',
+    );
+    console.log('ret', ret, root);
+    setLetters(lettersTmp);
     return ret;
-  });
+  }, []);
   const defaultExpandedKeys = useMemo(() => employees.map((o) => o.id), []);
 
   const onChange = useCallback((letter) => {
@@ -102,24 +133,37 @@ function App() {
 
   return (
     <Modal visible title="IndexBar Demo" footer={null} width="1000px">
-      <Input value={search} onChange={setSearch} />
-      <IndexBar onChange={onChange}>
-        <div className={styles.tree}>
-          <EasyTree
-            treeData={dataSource}
-            fieldNames={{
-              title: 'title',
-              key: 'id',
-              children: 'nodes',
+      <div
+        style={{
+          height: 600,
+        }}
+      >
+        <Input value={search} onChange={(e) => setSearch(e.target?.value)} />
+        <IndexBar onChange={onChange} letters={letters}>
+          <div
+            style={{
+              height: 565,
+              overflowY: 'auto',
             }}
-            searchValue={search}
-            checkable
-            blockNode
-            autoExpandParent={false}
-            defaultExpandedKeys={defaultExpandedKeys}
-          />
-        </div>
-      </IndexBar>
+          >
+            <div className={styles.tree}>
+              <EasyTree
+                treeData={dataSource}
+                fieldNames={{
+                  title: 'title',
+                  key: 'id',
+                  children: 'nodes',
+                }}
+                searchValue={search}
+                checkable
+                blockNode
+                autoExpandParent={false}
+                defaultExpandedKeys={defaultExpandedKeys}
+              />
+            </div>
+          </div>
+        </IndexBar>
+      </div>
     </Modal>
   );
 }

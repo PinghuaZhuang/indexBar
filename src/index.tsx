@@ -8,6 +8,7 @@ export interface IndexBarProps {
   className?: string;
   children?: React.ReactNode;
   value?: string;
+  letters?: string | string[];
   onChange?: (letter: string, index: number) => void;
   onLeave?: () => void;
 }
@@ -18,7 +19,14 @@ const clickStop: React.MouseEventHandler<HTMLDivElement> = (e) => {
 };
 
 const IndexBar: React.FC<IndexBarProps> = (props) => {
-  const { children, className, onChange: userOnChange, value, onLeave } = props;
+  const {
+    children,
+    className,
+    onChange: userOnChange,
+    value,
+    onLeave,
+    letters,
+  } = props;
 
   const [letter, setLetter] = useState(value);
   const [visible, setVisible] = useState(false);
@@ -37,6 +45,7 @@ const IndexBar: React.FC<IndexBarProps> = (props) => {
       onClick={clickStop}
     >
       <LetterBar
+        letters={letters}
         onChange={onChange}
         onLeave={onLeave}
         setVisible={setVisible}

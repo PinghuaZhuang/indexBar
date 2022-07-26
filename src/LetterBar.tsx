@@ -1,16 +1,31 @@
 import { useMemo, useCallback, useRef, useEffect } from 'react';
 import classNames from 'classnames';
+import uniq from 'lodash/uniq';
+import sortBy from 'lodash/sortBy';
 import { IndexBarProps } from './index';
 import styles from './style.module.less';
 
 export type LetterBarProps = Pick<
   IndexBarProps,
-  'onChange' | 'className' | 'onLeave'
+  'onChange' | 'className' | 'onLeave' | 'letters'
 > & {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+interface lettersMap {
+  [P: string]: { letter: string; index: number };
+}
+
 const letters = `ABCDEFGHIJKLMNOPQRSTUVWXYZ`;
+const lettersMap: lettersMap = letters
+  .split('')
+  .reduce((map, letter: string, index) => {
+    map[letter] = {
+      letter,
+      index,
+    };
+    return map;
+  }, {} as lettersMap);
 
 interface openBoxImp {
   (asyncClose?: boolean): void;
@@ -23,8 +38,20 @@ const LetterBar: React.FC<LetterBarProps> = (props) => {
     onChange: userOnChange,
     onLeave: userOnLeave,
     setVisible,
+    letters: userLetters,
   } = props;
   const isMouseDownRef = useRef(false);
+  const mergeLetters = useMemo(
+    () =>
+      sortBy(
+        uniq(
+          typeof userLetters === 'string' ? userLetters.split('') : userLetters,
+        ),
+      )
+        .map((o) => o?.toUpperCase())
+        .filter((o) => lettersMap[o]) ?? letters.split(''),
+    [userLetters],
+  );
 
   const closeBox = useCallback(() => {
     setVisible(false);
@@ -71,19 +98,22 @@ const LetterBar: React.FC<LetterBarProps> = (props) => {
 
   const lettersNode = useMemo(
     () =>
-      letters.split('').map((letter, index) => (
-        <span
-          key={letter}
-          className={styles.letter}
-          onClick={() => onLetterClick(letter, index)}
-          onMouseEnter={() => onLetterHover(letter, index)}
-          // onMouseDown={openBox}
-          // onMouseUp={closeBox}
-        >
-          {letter}
-        </span>
-      )),
-    [onLetterClick, onLetterHover],
+      mergeLetters.map((letter: string) => {
+        const index = lettersMap[letter.toUpperCase()].index;
+        return (
+          <span
+            key={letter}
+            className={styles.letter}
+            onClick={() => onLetterClick(letter, index)}
+            onMouseEnter={() => onLetterHover(letter, index)}
+            // onMouseDown={openBox}
+            // onMouseUp={closeBox}
+          >
+            {letter}
+          </span>
+        );
+      }),
+    [onLetterClick, onLetterHover, mergeLetters],
   );
 
   useEffect(() => {
@@ -93,7 +123,7 @@ const LetterBar: React.FC<LetterBarProps> = (props) => {
     };
   }, []);
 
-  return (
+  return mergeLetters.length ? (
     <div
       className={classNames(`index-bar`, className, styles.letterBar)}
       onMouseDown={onMouseDown}
@@ -102,7 +132,7 @@ const LetterBar: React.FC<LetterBarProps> = (props) => {
     >
       {lettersNode}
     </div>
-  );
+  ) : null;
 };
 
 export default LetterBar;
