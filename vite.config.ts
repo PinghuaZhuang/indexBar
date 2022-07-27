@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react';
 import legacy from '@vitejs/plugin-legacy';
 
 const isDev = process.env.VITE_ENV === 'dev';
+// const isProduction = process.env.NODE_ENV === 'production';
 
 function resolve(url: string) {
   return path.resolve(__dirname, url);
@@ -13,6 +14,7 @@ function resolve(url: string) {
 // https://vitejs.dev/config/
 export default defineConfig({
   root: isDev ? resolve('./demo') : process.cwd(),
+  base: './',
   envPrefix: 'APP_',
   server: {
     host: '0.0.0.0',
