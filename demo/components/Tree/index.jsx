@@ -33,7 +33,6 @@ const loop = (options) => {
     const index = title.indexOf(searchValue);
     const beforeStr = title.substring(0, index);
     const afterStr = title.slice(index + searchValue.length);
-    let unfilterNode = false;
 
     if (index > -1) {
       title = (
@@ -45,10 +44,10 @@ const loop = (options) => {
       );
 
       hasSearch && item[pidField] && expandedKeys.push(item[pidField], pid);
-      unfilterNode = false;
+      item.unfilterNode = false;
     } else {
-      title = <>{item[titleField]}</>;
-      unfilterNode = true;
+      title = item[titleField];
+      item.unfilterNode = true;
     }
 
     if (item[childrenField]) {
@@ -63,7 +62,7 @@ const loop = (options) => {
       };
     }
 
-    return { ...item, [titleField]: title, unfilterNode };
+    return { ...item, [titleField]: title };
   });
   return ret;
 };
@@ -81,10 +80,11 @@ const EasyTree = (props) => {
   const id = useMemo(() => _id++, []);
 
   const _treeData = useMemo(() => {
+    const treeDataDup = cloneDeep(treeData);
     if (searchValue === null || isEmptyString(searchValue)) {
       setExpandedKeys(defaultExpandedKeys);
       each(
-        cloneDeep(treeData),
+        treeDataDup,
         (o) => {
           o.unfilterNode = false;
         },
@@ -94,7 +94,7 @@ const EasyTree = (props) => {
     }
     const _expandedKeys = [...defaultExpandedKeys];
     const ret = loop({
-      data: [...treeData],
+      data: treeDataDup,
       searchValue: searchValue?.trim && searchValue?.trim(),
       fieldNames,
       expandedKeys: _expandedKeys,

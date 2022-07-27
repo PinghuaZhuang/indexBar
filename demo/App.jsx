@@ -32,9 +32,6 @@ export class Employee {
     return {
       nick: this.nick,
       adminUserId: this.id,
-      // toString: () => {
-      //   return this.id;
-      // },
     };
   }
 
@@ -142,11 +139,9 @@ function App() {
     );
   }, []);
 
-  const filterTreeNode = useCallback(
-    (node) =>
-      node.unfilterNode && (node.nodes == null || node.nodes.length <= 0),
-    [],
-  );
+  const filterTreeNode = useCallback((node) => {
+    return node.unfilterNode && (node.nodes == null || node.nodes.length <= 0);
+  }, []);
 
   return (
     <Modal visible title="IndexBar Demo" footer={null} width="1000px">
