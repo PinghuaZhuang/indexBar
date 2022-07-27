@@ -7,7 +7,7 @@ import styles from './style.module.less';
 
 export type LetterBarProps = Pick<
   IndexBarProps,
-  'onChange' | 'className' | 'onLeave' | 'letters'
+  'onChange' | 'className' | 'onLeave' | 'letters' | 'left' | 'right'
 > & {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -29,7 +29,7 @@ const lettersMap: lettersMap = letters
 
 interface openBoxImp {
   (asyncClose?: boolean): void;
-  timer?: number;
+  timer?: number | NodeJS.Timeout;
 }
 
 const LetterBar: React.FC<LetterBarProps> = (props) => {
@@ -39,6 +39,8 @@ const LetterBar: React.FC<LetterBarProps> = (props) => {
     onLeave: userOnLeave,
     setVisible,
     letters: userLetters,
+    right,
+    left,
   } = props;
   const isMouseDownRef = useRef(false);
   const mergeLetters = useMemo(
@@ -129,6 +131,10 @@ const LetterBar: React.FC<LetterBarProps> = (props) => {
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}
+      style={{
+        right,
+        left,
+      }}
     >
       {lettersNode}
     </div>

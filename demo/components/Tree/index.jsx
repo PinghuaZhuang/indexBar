@@ -6,12 +6,26 @@
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import { Tree } from 'antd';
 import { isEmptyString } from '@is';
-import { scrollIntoView, getScrollContainer, each } from '@/utils';
+import { getScrollContainer, each } from '@/utils';
 import classNames from 'classnames';
 import cloneDeep from 'lodash/cloneDeep';
+import debounce from 'lodash/debounce';
 
 let _id = 0;
 let timer = null;
+
+function useDebounceValue(value) {
+  const [dvalue, setDValue] = useState(value);
+
+  useEffect(() => {
+    useDebounceValue.debounceValue(() => {
+      setDValue(value);
+    });
+  }, [value]);
+
+  return dvalue;
+}
+useDebounceValue.debounceValue = debounce((fn) => fn(), 300);
 
 // 查找数据并高亮, 展开父节点
 const loop = (options) => {
@@ -30,15 +44,16 @@ const loop = (options) => {
 
   const ret = data.map((item) => {
     let title = item[titleField];
-    const index = title.indexOf(searchValue);
+    const index = title.toUpperCase().indexOf(searchValue.toUpperCase());
     const beforeStr = title.substring(0, index);
-    const afterStr = title.slice(index + searchValue.length);
+    const afterStr = title.substring(index + searchValue.length);
+    const hilightContent = title.substring(index, index + searchValue.length);
 
     if (index > -1) {
       title = (
         <span>
           {beforeStr}
-          <span className="highlight">{searchValue}</span>
+          <span className="highlight">{hilightContent}</span>
           {afterStr}
         </span>
       );
@@ -107,7 +122,7 @@ const EasyTree = (props) => {
     ret.actionScoll = true;
     return ret;
     // 不监听 fieldNames
-  }, [searchValue, treeData, hasSearch]);
+  }, [useDebounceValue(searchValue), treeData, hasSearch]);
 
   const calcProps = { treeData: _treeData };
   if (hasSearch) {

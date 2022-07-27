@@ -13,7 +13,7 @@ function createUser(pid, level = 0) {
     level >= 2
       ? []
       : level <= 0 || random(1) > 0.75
-      ? Array.from({ length: random(1, 5) }).map(() =>
+      ? Array.from({ length: random(20, 30) }).map(() =>
           createUser(id, nextLevel),
         )
       : [];

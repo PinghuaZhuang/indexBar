@@ -10,6 +10,8 @@ export interface IndexBarProps {
   children?: React.ReactNode;
   value?: string;
   letters?: string | string[];
+  right?: number | string;
+  left?: number | string;
   onChange?: (letter: string, index: number) => void;
   onLeave?: () => void;
 }
@@ -29,6 +31,8 @@ const IndexBar: React.FC<IndexBarProps> & {
     value,
     onLeave,
     letters,
+    left,
+    right,
   } = props;
 
   const [letter, setLetter] = useState(value);
@@ -48,6 +52,8 @@ const IndexBar: React.FC<IndexBarProps> & {
       onClick={clickStop}
     >
       <LetterBar
+        left={left}
+        right={right}
         letters={letters}
         onChange={onChange}
         onLeave={onLeave}

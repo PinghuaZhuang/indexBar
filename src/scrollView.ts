@@ -6,6 +6,7 @@
 export default function scrollIntoView(
   container: HTMLElement,
   selected: HTMLElement,
+  scrollDiff: number = 0,
 ) {
   if (!selected) {
     container.scrollTop = 0;
@@ -25,7 +26,8 @@ export default function scrollIntoView(
   // const viewRectTop = container.scrollTop;
   // const viewRectBottom = viewRectTop + container.clientHeight;
 
-  container.scrollTop = top;
+  container.scrollTop = top + scrollDiff;
+  selected.click(); // 聚焦
 
   // container.scrollTo({
   //   top,
