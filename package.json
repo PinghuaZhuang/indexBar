@@ -1,7 +1,10 @@
 {
-  "name": "vite-project",
+  "name": "@zstark/index-bar",
   "version": "1.0.0",
   "type": "module",
+  "main": "lib/index-bar.umd",
+  "module": "src",
+  "browser": "lib/index-bar.umd.cjs",
   "scripts": {
     "build": "vite build",
     "build:example": "cross-env VITE_ENV=dev vite build --emptyOutDir",
