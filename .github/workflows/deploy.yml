@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages Easy draggable html.
+name: Deploy to GitHub Pages index-bar html.
 
 on:
   push:

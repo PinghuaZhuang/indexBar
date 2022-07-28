@@ -1,7 +1,6 @@
 import { useState, useMemo, useCallback, useRef } from 'react';
 import { Modal, Input } from 'antd';
 import cloneDeep from 'lodash/cloneDeep';
-import uniq from 'lodash/uniq';
 import sortBy from 'lodash/sortBy';
 import EasyTree from '@/components/Tree';
 import employees from '@/mock/employees';
@@ -125,7 +124,7 @@ function App() {
     const target = document.querySelector(`.${letter}`);
     console.log(letter, 'onChange');
     if (target) {
-      scrollIntoView(container, document.querySelector(`.${letter}`));
+      scrollIntoView(container, document.querySelector(`.${letter}`), -12);
     }
   }, []);
 

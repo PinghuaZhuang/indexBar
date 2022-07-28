@@ -100,16 +100,13 @@ const LetterBar: React.FC<LetterBarProps> = (props) => {
 
   const lettersNode = useMemo(
     () =>
-      mergeLetters.map((letter: string) => {
-        const index = lettersMap[letter.toUpperCase()].index;
+      mergeLetters.map((letter, index) => {
         return (
           <span
             key={letter}
             className={styles.letter}
             onClick={() => onLetterClick(letter, index)}
             onMouseEnter={() => onLetterHover(letter, index)}
-            // onMouseDown={openBox}
-            // onMouseUp={closeBox}
           >
             {letter}
           </span>
