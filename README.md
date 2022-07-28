@@ -1,12 +1,14 @@
 # indexBar
 
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/PinghuaZhuang/indexBar/blob/master/LICENSE) [![Commit](https://img.shields.io/github/last-commit/pinghuazhuang/indexBar.svg)](https://github.com/PinghuaZhuang/indexBar/commits/master) [![Verison](https://img.shields.io/github/package-json/v/pinghuazhuang/indexBar.svg)](https://github.com/PinghuaZhuang/lib/releases)
+[![Publish index-bar lib.](https://github.com/PinghuaZhuang/indexBar/actions/workflows/publish.yml/badge.svg)](https://github.com/PinghuaZhuang/indexBar/actions/workflows/publish.yml) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/PinghuaZhuang/indexBar/blob/master/LICENSE) [![Commit](https://img.shields.io/github/last-commit/pinghuazhuang/indexBar.svg)](https://github.com/PinghuaZhuang/indexBar/commits/master) [![Verison](https://img.shields.io/github/package-json/v/pinghuazhuang/indexBar.svg)](https://github.com/PinghuaZhuang/lib/releases)
 
 PC 端 indexBar 插件.
 
 ## Example
 
 [Live Demo](https://pinghuazhuang.github.io/index-bar/)
+
+![](https://git.poker/PinghuaZhuang/note/blob/master/images-upload/indexBar.57kvhknf2gs0.gif?raw=true)
 
 ## 🚀 Quick Start
 
