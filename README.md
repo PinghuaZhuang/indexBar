@@ -12,8 +12,12 @@ PC 端 indexBar 插件.
 
 ## 🚀 Quick Start
 
+```bash
+npm install @zstark/index-bar --prod
+```
+
 ```jsx
-import IndexBar, { scrollIntoView } from '@z/IndexBar';
+import IndexBar, { scrollIntoView } from '@zstark/index-bar';
 
 const Demo = () => {
   const onChange = useCallback((letter) => {
