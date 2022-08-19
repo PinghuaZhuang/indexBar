@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "license": "MIT",
   "type": "module",
-  "main": "lib/index-bar.umd",
+  "main": "lib/index-bar.js",
   "module": "src",
   "browser": "lib/index-bar.umd.cjs",
   "scripts": {
