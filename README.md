@@ -6,7 +6,7 @@ PC 端 indexBar 插件.
 
 ## Example
 
-[Live Demo](https://pinghuazhuang.github.io/index-bar/)
+[Live Demo](https://pinghuazhuang.github.io/%40zstark/index-bar/)
 
 ![](https://git.poker/PinghuaZhuang/note/blob/master/images-upload/indexBar.57kvhknf2gs0.gif?raw=true)
 
